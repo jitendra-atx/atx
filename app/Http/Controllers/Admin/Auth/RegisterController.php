@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Auth;
 
-use App\User;
+
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Model\User;
 
 class RegisterController extends Controller
 {
@@ -20,14 +20,12 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
-
     /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -63,5 +61,19 @@ class RegisterController extends Controller
     protected function create()
     {
         return view('admin.user.register');
+    }
+
+    protected function store(Request $request)
+    {
+      $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'telephone' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+        ]);
+        User::create($request->all());
     }
 }
